@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Görsel Zekâ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .drop-zone {
+            border: 2px dashed #4a5568;
+            transition: all 0.3s ease;
+        }
+        .drop-zone.dragover {
+            border-color: #4299e1;
+            background-color: rgba(66, 153, 225, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen transition-colors">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold text-center mb-8 text-gray-800">Görsel Zekâ</h1>
+        
+        <!-- Görsel Yükleme Alanı -->
+        <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-6 mb-8">
+            <div id="dropZone" class="drop-zone rounded-lg p-8 text-center cursor-pointer mb-4">
+                <div class="text-gray-600">
+                    <svg class="mx-auto h-12 w-12 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                    </svg>
+                    <p class="text-lg">Görseli buraya sürükleyin veya</p>
+                    <input type="file" id="fileInput" class="hidden" accept="image/*">
+                    <button onclick="document.getElementById('fileInput').click()" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+                        Dosya Seç
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dil Seçici -->
+        <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-6 mb-8 flex items-center gap-4">
+            <label for="langSelect" class="font-medium text-gray-700">OCR Dili:</label>
+            <select id="langSelect" class="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <option value="tur+eng">Türkçe + İngilizce</option>
+                <option value="tur">Sadece Türkçe</option>
+                <option value="eng">Sadece İngilizce</option>
+            </select>
+        </div>
+
+        <!-- İşlem Seçenekleri -->
+        <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">İşlem Seçenekleri</h2>
+            <div class="space-y-4">
+                <button id="extractText" class="w-full px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition">
+                    Metni Çıkar
+                </button>
+                <button id="summarize" class="w-full px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 transition">
+                    Özetle
+                </button>
+                <button id="extractKeywords" class="w-full px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition">
+                    Anahtar Kelimeleri Çıkar
+                </button>
+            </div>
+        </div>
+
+        <!-- Sonuç Alanı -->
+        <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">Sonuç</h2>
+            <div id="result" class="bg-gray-50 rounded p-4 min-h-[200px] max-h-[400px] overflow-y-auto">
+                <p class="text-gray-500 text-center">Sonuç burada görüntülenecek...</p>
+            </div>
+        </div>
+
+        <!-- Çıktı Geçmişi -->
+        <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">Çıktı Geçmişi</h2>
+            <div id="history" class="bg-gray-50 rounded p-4 min-h-[80px] max-h-[200px] overflow-y-auto text-sm text-gray-700">
+                <p class="text-gray-400 text-center">Henüz geçmiş yok.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const result = document.getElementById('result');
+        let currentImage = null;
+        let currentLang = 'tur+eng';
+        let currentFileType = 'image';
+        let outputHistory = [];
+
+        // Drag & Drop işlemleri
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            handleFile(file);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            handleFile(file);
+        });
+
+        function handleFile(file) {
+            if (file.type === 'application/pdf') {
+                currentFileType = 'pdf';
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    currentImage = e.target.result;
+                    result.innerHTML = `
+                        <div class="flex flex-col items-center">
+                            <span class="text-5xl mb-2">📄</span>
+                            <p class="text-green-500">PDF yüklendi! Metni çıkarmak için 'Metni Çıkar'ı kullanabilirsiniz.</p>
+                        </div>
+                    `;
+                };
+                reader.readAsDataURL(file);
+            } else if (file.type.startsWith('image/')) {
+                currentFileType = 'image';
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    currentImage = e.target.result;
+                    result.innerHTML = `
+                        <div class="flex flex-col items-center">
+                            <img src="${currentImage}" alt="Yüklenen Görsel" class="max-h-40 mb-2 rounded shadow">
+                            <p class="text-green-500">Görsel yüklendi! İşlem seçeneklerinden birini kullanabilirsiniz.</p>
+                        </div>
+                    `;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert('Lütfen bir görsel veya PDF dosyası seçin!');
+                return;
+            }
+        }
+
+        // API istekleri
+        async function makeRequest(endpoint, data) {
+            try {
+                const response = await fetch(`http://localhost:5000/${endpoint}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                return await response.json();
+            } catch (error) {
+                console.error('Hata:', error);
+                return { success: false, error: 'Bir hata oluştu!' };
+            }
+        }
+
+        function showImagePreview() {
+            if (currentFileType === 'pdf') {
+                return `<div class='flex flex-col items-center mb-2'><span class='text-4xl'>📄</span><span class='text-xs text-gray-500'>PDF</span></div>`;
+            }
+            if (currentImage) {
+                return `<div class='flex flex-col items-center mb-2'><img src='${currentImage}' alt='Yüklenen Görsel' class='max-h-32 rounded shadow'></div>`;
+            }
+            return '';
+        }
+
+        function showLoader(text = 'İşleniyor...') {
+            result.innerHTML = `
+                ${showImagePreview()}
+                <div class='flex flex-col items-center'>
+                    <svg class='animate-spin h-8 w-8 text-blue-500 mb-2' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'>
+                        <circle class='opacity-25' cx='12' cy='12' r='10' stroke='currentColor' stroke-width='4'></circle>
+                        <path class='opacity-75' fill='currentColor' d='M4 12a8 8 0 018-8v8z'></path>
+                    </svg>
+                    <p class='text-blue-500'>${text}</p>
+                </div>
+            `;
+        }
+
+        function showCopyButton(content) {
+            return `<button onclick="navigator.clipboard.writeText(\`${content.replace(/`/g, '\`')}\`)" class="mt-2 px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded text-sm">Kopyala</button>`;
+        }
+
+        function addToHistory(type, content) {
+            outputHistory.unshift({ type, content, time: new Date().toLocaleTimeString() });
+            if (outputHistory.length > 10) outputHistory = outputHistory.slice(0, 10);
+            renderHistory();
+        }
+
+        function renderHistory() {
+            const historyDiv = document.getElementById('history');
+            if (!outputHistory.length) {
+                historyDiv.innerHTML = '<p class="text-gray-400 text-center">Henüz geçmiş yok.</p>';
+                return;
+            }
+            historyDiv.innerHTML = outputHistory.map(item =>
+                `<div class='mb-2 p-2 rounded border'>
+                    <div class='flex justify-between items-center mb-1'>
+                        <span class='font-bold'>${item.type}</span>
+                        <span class="text-xs text-gray-400">${item.time}</span>
+                    </div>
+                    <div class='max-h-16 overflow-y-auto whitespace-pre-wrap'>${item.content}</div>
+                </div>`
+            ).join('');
+        }
+
+        // Buton referansları
+        const btnExtract = document.getElementById('extractText');
+        // Buton işlemleri
+        document.getElementById('extractText').addEventListener('click', async () => {
+            if (!currentImage) {
+                alert('Lütfen önce bir görsel veya PDF yükleyin!');
+                return;
+            }
+            showLoader(currentFileType === 'pdf' ? 'PDF metni çıkarılıyor...' : 'Metin çıkarılıyor...');
+            const response = await makeRequest('extract-text', { image: currentImage, lang: currentLang, filetype: currentFileType });
+            if (response.success) {
+                let extraInfo = '';
+                if (response.qr_barcodes && response.qr_barcodes.length > 0) {
+                    extraInfo += `<div class='mb-2'><b>QR/Barkodlar:</b><ul class='list-disc ml-6'>` +
+                        response.qr_barcodes.map(qr => `<li><span class='font-mono bg-gray-200 px-2 py-1 rounded'>${qr.type}: ${qr.data}</span></li>`).join('') +
+                        `</ul></div>`;
+                }
+                if (response.tables && response.tables.length > 0) {
+                    extraInfo += `<div class='mb-2'><b>Tablo Tespit Edildi:</b> ${response.tables.length} adet tablo/alan bulundu.</div>`;
+                }
+                result.innerHTML = `
+                    ${showImagePreview()}
+                    ${extraInfo}
+                    <pre class="whitespace-pre-wrap">${response.text}</pre>
+                    ${showCopyButton(response.text)}
+                `;
+                addToHistory('Metin Çıkar', response.text);
+            } else {
+                result.innerHTML = `<p class="text-red-500">Hata: ${response.error}</p>`;
+            }
+        });
+
+        document.getElementById('summarize').addEventListener('click', async () => {
+            if (!currentImage) {
+                alert('Lütfen önce bir görsel yükleyin!');
+                return;
+            }
+            showLoader('Özetleniyor...');
+            const response = await makeRequest('summarize', { text: result.textContent });
+            if (response.success) {
+                result.innerHTML = `
+                    ${showImagePreview()}
+                    <p>${response.summary}</p>
+                    ${showCopyButton(response.summary)}
+                `;
+                addToHistory('Özet', response.summary);
+            } else {
+                result.innerHTML = `<p class="text-red-500">Hata: ${response.error}</p>`;
+            }
+        });
+
+        document.getElementById('extractKeywords').addEventListener('click', async () => {
+            if (!currentImage) {
+                alert('Lütfen önce bir görsel yükleyin!');
+                return;
+            }
+            showLoader('Anahtar kelimeler çıkarılıyor...');
+            const response = await makeRequest('keywords', { text: result.textContent });
+            if (response.success) {
+                result.innerHTML = `
+                    ${showImagePreview()}
+                    <div class="flex flex-wrap gap-2 mb-2">
+                        ${response.keywords.map(keyword => 
+                            `<span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full">${keyword}</span>`
+                        ).join('')}
+                    </div>
+                    ${showCopyButton(response.keywords.join(', '))}
+                `;
+                addToHistory('Anahtar Kelimeler', response.keywords.join(', '));
+            } else {
+                result.innerHTML = `<p class="text-red-500">Hata: ${response.error}</p>`;
+            }
+        });
+
+        document.getElementById('langSelect').addEventListener('change', (e) => {
+            currentLang = e.target.value;
+        });
+    </script>
+</body>
+</html> 
