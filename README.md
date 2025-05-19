@@ -143,8 +143,6 @@ Then open `frontend/index.html` in your browser (CORS must be enabled for API ca
 
 ---
 
-## License
-MIT 
 
 ---
 
