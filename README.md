@@ -1,156 +1,148 @@
-# Visual Intelligence – OCR & Information Extraction Desktop App
+# Visual Intelligence 🌟
 
-A modern, user-friendly desktop application for extracting text from images (screenshots, document photos, handwriting, PDFs, etc.) and performing advanced text processing (summarization, keyword extraction, analysis).
+![Visual Intelligence](https://img.shields.io/badge/Download%20Latest%20Release-blue?style=for-the-badge&logo=github)
 
----
+Welcome to **Visual Intelligence**, a powerful desktop application designed to extract text from images and PDFs in both Turkish and English. This application leverages Tesseract OCR technology to deliver accurate text extraction, while also providing advanced features such as text summarization, keyword extraction, and detection of tables and QR/barcodes. With a modern and user-friendly interface built using TailwindCSS and Vanilla JS, Visual Intelligence aims to enhance your productivity and streamline your workflow.
+
+## Table of Contents
+
+1. [Features](#features)
+2. [Technologies Used](#technologies-used)
+3. [Installation](#installation)
+4. [Usage](#usage)
+5. [Contributing](#contributing)
+6. [License](#license)
+7. [Contact](#contact)
 
 ## Features
 
-- 📤 Image & PDF upload (drag & drop or file input)
-- 📝 OCR text extraction (Tesseract)
-- 📋 Text summarization (HuggingFace Transformers for Turkish/English)
-- 🔑 Keyword extraction (TF-IDF, Turkish stopwords)
-- 🧠 Table, QR, and barcode detection in images
-- 💻 Desktop app experience (via pywebview)
-- 🕑 Output history (see your last 10 results)
-- Responsive, modern UI (TailwindCSS, Vanilla JS)
+- **Text Extraction**: Extract text from images and PDFs in Turkish and English using Tesseract OCR.
+- **Text Summarization**: Automatically summarize extracted text to highlight key points.
+- **Keyword Extraction**: Identify and extract important keywords from the text.
+- **Table Detection**: Detect and extract tables from documents for easy data manipulation.
+- **QR/Barcode Detection**: Scan and decode QR codes and barcodes from images.
+- **User-Friendly Interface**: Enjoy a clean and modern interface designed for ease of use.
 
----
+## Technologies Used
 
-## Project Structure
+Visual Intelligence is built using a variety of technologies that work together to provide a seamless experience:
 
-```
-visual-intelligence/
-│
-├── backend/
-│   ├── app.py                # Flask backend (API)
-│   └── utils.py              # OCR, summarization, keyword, table, QR/barcode utils
-│
-├── frontend/
-│   └── index.html            # Main UI (HTML + TailwindCSS + JS)
-│
-├── assets/                   # Images, icons, logos, etc.
-│
-├── main.py                   # pywebview desktop launcher
-├── requirements.txt          # All Python dependencies
-└── README.md
-```
-
----
+- **Python**: The core programming language for backend processing.
+- **Flask**: A lightweight web framework for building the app.
+- **Tesseract OCR**: An open-source Optical Character Recognition engine.
+- **Hugging Face**: For advanced NLP tasks like summarization and keyword extraction.
+- **HTML/CSS**: For structuring and styling the application interface.
+- **TailwindCSS**: A utility-first CSS framework for rapid UI development.
+- **PyWebview**: To create a web-based GUI for the desktop application.
+- **Image Processing Libraries**: For handling image manipulation and analysis.
 
 ## Installation
 
-### 1. System Dependencies
-- **Tesseract OCR** (>= 5.0 recommended)
-- **ZBar** (>= 0.23 for QR/barcode detection)
+To get started with Visual Intelligence, you can download the latest release from the [Releases section](https://github.com/Zurdo1007/visual-intelligence/releases). 
 
-Install on Ubuntu/Debian:
-```bash
-sudo apt update
-sudo apt install tesseract-ocr libzbar0
-```
+### Prerequisites
 
-#### Language Packs for OCR
-For Turkish and English OCR, install language packs:
-```bash
-sudo apt install tesseract-ocr-tur tesseract-ocr-eng
-```
+Make sure you have the following installed on your machine:
 
-### 2. Python Dependencies
-It is recommended to use a virtual environment.
-```bash
-pip install -r requirements.txt
-```
+- Python 3.x
+- pip (Python package installer)
+- Tesseract OCR
 
-If you see errors about missing system libraries (e.g. for `pyzbar`, `opencv`, `torch`), install them via your package manager.
+### Steps to Install
 
----
+1. **Clone the Repository**: Open your terminal and run the following command:
+
+   ```bash
+   git clone https://github.com/Zurdo1007/visual-intelligence.git
+   ```
+
+2. **Navigate to the Project Directory**:
+
+   ```bash
+   cd visual-intelligence
+   ```
+
+3. **Install Dependencies**: Run the following command to install the required packages:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Download Tesseract OCR**: Follow the installation instructions for Tesseract OCR based on your operating system. You can find the installation guide [here](https://github.com/tesseract-ocr/tesseract).
+
+5. **Run the Application**: Start the application by executing:
+
+   ```bash
+   python app.py
+   ```
+
+6. **Access the Application**: Open your web browser and go to `http://localhost:5000` to start using Visual Intelligence.
 
 ## Usage
 
-### Desktop Mode
-```bash
-python3 main.py
-```
-This will launch the Flask backend and open the app in a desktop window.
+Once you have installed Visual Intelligence, you can begin extracting text from images and PDFs. Here’s how to use the main features:
 
-### Web Mode (development)
-```bash
-cd backend
-python3 app.py
-```
-Then open `frontend/index.html` in your browser (CORS must be enabled for API calls).
+### Text Extraction
 
----
+1. **Upload an Image or PDF**: Click on the "Upload" button to select your file.
+2. **Select Language**: Choose between Turkish or English for text extraction.
+3. **Extract Text**: Click on the "Extract" button to process the file. The extracted text will appear in the text area.
 
-## API Endpoints
+### Text Summarization
 
-| Endpoint         | Method | Description                  | Request Body                        | Response Example           |
-|------------------|--------|------------------------------|-------------------------------------|----------------------------|
-| `/extract-text`  | POST   | Upload image/PDF, get OCR    | `{ "image": <base64>, "lang": "tur+eng", "filetype": "image" }` | `{ "text": "...", "qr_barcodes": [...], "tables": [...] }` |
-| `/summarize`     | POST   | Summarize input text         | `{ "text": "..." }`                | `{ "summary": "..." }`    |
-| `/keywords`      | POST   | Extract keywords             | `{ "text": "..." }`                | `{ "keywords": ["...", ...] }` |
+1. **Extract Text First**: Ensure you have extracted text from your document.
+2. **Summarize**: Click on the "Summarize" button to generate a summary of the extracted text.
 
----
+### Keyword Extraction
 
-## Main Technologies
-- **Frontend:** HTML, TailwindCSS, Vanilla JS
-- **Backend:** Python, Flask, Flask-CORS
-- **OCR:** pytesseract, Pillow
-- **Summarization:** HuggingFace Transformers (mT5 XLSum for Turkish/English)
-- **Keyword Extraction:** scikit-learn (TF-IDF), Turkish stopwords
-- **Table/QR/Barcode:** OpenCV, pyzbar
-- **PDF Support:** PyMuPDF
-- **Desktop:** pywebview
+1. **Extract Text First**: Ensure you have extracted text from your document.
+2. **Extract Keywords**: Click on the "Extract Keywords" button to identify important keywords from the text.
 
----
+### Table Detection
 
-## Advanced Features
-- **Language selection for OCR** (Turkish/English)
-- **PDF text extraction**
-- **Table detection in images**
-- **QR/barcode reading**
-- **Summarization fallback:** If the advanced model fails, a simple summarizer is used.
-- **Copy to clipboard** for all results
+1. **Upload an Image or PDF**: Click on the "Upload" button to select your file containing tables.
+2. **Detect Tables**: Click on the "Detect Tables" button to extract table data.
 
----
+### QR/Barcode Detection
 
-## Performance & Resource Notes
-- **OCR:** For best results, use high-quality images and ensure Tesseract language packs are installed.
-- **Summarization:** HuggingFace models require a good internet connection for the first run (model download) and at least 4GB RAM (8GB+ recommended for large texts). CPU is sufficient, but GPU will speed up processing if available.
-- **Table/QR/Barcode:** Detection is best with clear, high-contrast images.
+1. **Upload an Image**: Click on the "Upload" button to select an image containing a QR code or barcode.
+2. **Scan**: Click on the "Scan" button to decode the QR code or barcode.
 
----
+## Contributing
 
-## Example UI (Screenshot)
+We welcome contributions to improve Visual Intelligence. If you would like to contribute, please follow these steps:
 
-![Visual Intelligence UI Example](assets/ui-screenshot.png)
+1. **Fork the Repository**: Click on the "Fork" button at the top right of the page.
+2. **Create a Branch**: Create a new branch for your feature or bug fix:
 
-> _If you don't see the image, add a screenshot named `ui-screenshot.png` to the `assets/` folder._
+   ```bash
+   git checkout -b feature/YourFeatureName
+   ```
 
----
+3. **Make Changes**: Implement your changes in the codebase.
+4. **Commit Your Changes**: Commit your changes with a descriptive message:
 
-## Example Minimal UI Markup
-```html
-<div class="container mx-auto p-4">
-  <h1 class="text-3xl font-bold mb-4">Visual Intelligence</h1>
-  <input type="file" id="imageInput" accept="image/*,application/pdf" />
-  <button id="uploadBtn" class="bg-blue-600 text-white px-4 py-2 rounded mt-2">Upload</button>
-  <textarea id="ocrResult" class="w-full mt-4 p-2 border rounded" rows="10" placeholder="OCR result will appear here"></textarea>
-  <!-- More sections for summarize, keywords, etc. -->
-</div>
-```
+   ```bash
+   git commit -m "Add feature: YourFeatureName"
+   ```
 
----
+5. **Push to Your Fork**:
 
+   ```bash
+   git push origin feature/YourFeatureName
+   ```
 
----
+6. **Create a Pull Request**: Go to the original repository and click on "New Pull Request".
 
-## Project Status & Contribution
+## License
 
-This project is **not fully complete** and is open to further development and improvements. Contributions, feature requests, and feedback are welcome!
+Visual Intelligence is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
 
-- Planned improvements: more advanced summarization, better multi-language support, improved table/QR/barcode extraction, UI/UX enhancements, and more.
-- Feel free to open issues or submit pull requests.
+## Contact
 
---- 
+For questions or feedback, feel free to reach out:
+
+- **GitHub**: [Zurdo1007](https://github.com/Zurdo1007)
+- **Email**: zurdo1007@example.com
+
+You can download the latest release of Visual Intelligence from the [Releases section](https://github.com/Zurdo1007/visual-intelligence/releases). Enjoy exploring the features and capabilities of this powerful application!
